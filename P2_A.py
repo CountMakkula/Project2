@@ -1,7 +1,7 @@
 import console_gfx
 #Print the main menu
 def Menu():
-    print("RLE Menu\n--------\n0. Exit\n1. Load File\n2. Load Test Image\n6. Display Image\n")
+    print("RLE Menu\n--------\n0. Exit\n1. Load File\n2. Load Test Image\n3. Read RLE String\n4. Read RLE Hex String\n5. Read Data Hex String\n6. Display Image\n7. Display RLE String\n8. Display Hex RLE Data\n9. Display Hex Flat Data\n")
 
 def main():
     print("Welcome to the RLE image encoder!\n\nDisplaying Spectrum Image:")
