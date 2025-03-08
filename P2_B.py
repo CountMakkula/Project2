@@ -28,31 +28,32 @@ def main():
 #Translates RLE or raw data to a hexadecimal string
 def to_hex_string(data):
     ReturnString = ""
-    for index, val in enumerate(data):
-        if index % 2 == 0:
+    for val in data:
+        if val < 10:
             ReturnString += str(val)
-        else:
-            if val < 10:
-                ReturnString += str(val)
-            elif val == 10:
-                ReturnString += "a"
-            elif val == 11:
-                ReturnString += "b"
-            elif val == 12:
-                ReturnString += "c"
-            elif val == 13:
-                ReturnString += "d"
-            elif val == 14:
-                ReturnString += "e"
-            elif val == 15:
-                ReturnString += "f"
+        elif val == 10:
+            ReturnString += "a"
+        elif val == 11:
+            ReturnString += "b"
+        elif val == 12:
+            ReturnString += "c"
+        elif val == 13:
+            ReturnString += "d"
+        elif val == 14:
+            ReturnString += "e"
+        elif val == 15:
+            ReturnString += "f"
     return ReturnString
 
 #Gives the number of runs of data in a set
 def count_runs(flat_data):
     Runs = 0
-    for val in set(flat_data):
-        Runs += 1
+    for index, val in enumerate(flat_data):
+        try:
+            if flat_data[index+1] != flat_data[index]:
+                Runs += 1
+        except:
+            Runs += 1
     return Runs
 
 #Encodes raw data to RLE
@@ -63,6 +64,10 @@ def encode_rle(flat_data):
         try:
             if flat_data[index+1] == flat_data[index]:
                 RunLength += 1
+                if RunLength == 15:
+                    RunLength = 0
+                    ReturnList.append(15)
+                    ReturnList.append(val)
             else:
                 ReturnList.append(RunLength)
                 ReturnList.append(val)
@@ -107,7 +112,7 @@ def string_to_data(data_string):
         if val == "f":
             ReturnData.append(15)
         else:
-            ReturnData.append(val)
+            ReturnData.append(int(val))
     return ReturnData
 
 #If the file is run directly, run the script
