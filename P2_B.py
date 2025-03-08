@@ -47,7 +47,7 @@ def to_hex_string(data):
 
 #Gives the number of runs of data in a set
 def count_runs(flat_data):
-    Runs = 1
+    Runs = 0
     RunLength = 1
     for index, val in enumerate(flat_data):
         try:
@@ -57,7 +57,7 @@ def count_runs(flat_data):
                 RunLength += 1
                 if RunLength == 15:
                     Runs += 1
-                    RunLength == 0
+                    RunLength = 0
         except:
             Runs += 1
     return Runs
