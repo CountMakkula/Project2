@@ -107,15 +107,15 @@ def string_to_data(data_string):
     for val in data_string:
         if val == "a":
             ReturnData.append(10)
-        if val == "b":
+        elif val == "b":
             ReturnData.append(11)
-        if val == "c":
+        elif val == "c":
             ReturnData.append(12)
-        if val == "d":
+        elif val == "d":
             ReturnData.append(13)
-        if val == "e":
+        elif val == "e":
             ReturnData.append(14)
-        if val == "f":
+        elif val == "f":
             ReturnData.append(15)
         else:
             ReturnData.append(int(val))
