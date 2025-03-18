@@ -36,6 +36,7 @@ def main():
                 ImageFile.append(HexIntConvert(i))
         #Displays the current image
         elif Option == 6:
+            print("Displaying image...")
             console_gfx.display_image(ImageFile)
         #Converts current data to human-readable RLE
         elif Option == 7:
@@ -111,7 +112,10 @@ def decode_rle(rle_data):
     ReturnData = []
     for index, val in enumerate(rle_data):
         if index % 2 == 1:
-            PrevVal = HexIntConvert(rle_data[index-1])
+            if rle_data[index-1] in ("a", "b", "c", "d", "e", "f"):
+                PrevVal = HexIntConvert(rle_data[index-1])
+            else:
+                PrevVal = rle_data[index-1]
             for i in range(PrevVal):
                 ReturnData.append(val)
     return ReturnData
