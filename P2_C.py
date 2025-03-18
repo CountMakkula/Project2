@@ -14,35 +14,49 @@ def main():
             break
         #Load file
         elif Option == 1:
-            FileName = input("Enter the name of the file: ")
+            FileName = input("Enter name of the file to load: ")
             ImageFile = console_gfx.load_file(FileName)
         #Load test image
         elif Option == 2:
             ImageFile = console_gfx.test_image
-            print("Test image data is loaded")
+            print("Test image data loaded.")
+        #Reads RLE string
+        elif Option == 3:
+            RLEString = input("Enter an RLE string to be decoded: ")
+            ImageFile = decode_rle(string_to_rle(RLEString))
+        #Reads RLE hex string
+        elif Option == 4:
+            RLEString = input("Enter the hex string holding RLE data: ")
+            ImageFile = decode_rle(string_to_data(RLEString))
+        #Reads RLE data in hex notation
+        elif Option == 5:
+            HexData = input("Enter the hex string holding flat data: ")
+            ImageFile = []
+            for i in HexData:
+                ImageFile.append(HexIntConvert(i))
+        #Displays the current image
         elif Option == 6:
             console_gfx.display_image(ImageFile)
+        #Converts current data to human-readable RLE
+        elif Option == 7:
+            RLE = to_rle_string(encode_rle(ImageFile))
+            print(f"RLE representation: {RLE}")
+        #Converts current data to RLE hex
+        elif Option == 8:
+            RLE = to_hex_string(encode_rle(ImageFile))
+            print(f"RLE hex values: {RLE}")
+        #Displays current flat data in hex
+        elif Option == 9:
+            RLE = to_hex_string(ImageFile)
+            print(f"Flat hex values: {RLE}")
         else:
-            print("Invalid selection")
+            print("Error! Invalid input.")
 
 #Translates RLE or raw data to a hexadecimal string
 def to_hex_string(data):
     ReturnString = ""
     for val in data:
-        if val < 10:
-            ReturnString += str(val)
-        elif val == 10:
-            ReturnString += "a"
-        elif val == 11:
-            ReturnString += "b"
-        elif val == 12:
-            ReturnString += "c"
-        elif val == 13:
-            ReturnString += "d"
-        elif val == 14:
-            ReturnString += "e"
-        elif val == 15:
-            ReturnString += "f"
+        ReturnString += str(HexIntConvert(val))
     return ReturnString
 
 #Gives the number of runs of data in a set
@@ -97,7 +111,8 @@ def decode_rle(rle_data):
     ReturnData = []
     for index, val in enumerate(rle_data):
         if index % 2 == 1:
-            for i in range(rle_data[index-1]):
+            PrevVal = HexIntConvert(rle_data[index-1])
+            for i in range(PrevVal):
                 ReturnData.append(val)
     return ReturnData
 
@@ -105,20 +120,7 @@ def decode_rle(rle_data):
 def string_to_data(data_string):
     ReturnData = []
     for val in data_string:
-        if val == "a":
-            ReturnData.append(10)
-        elif val == "b":
-            ReturnData.append(11)
-        elif val == "c":
-            ReturnData.append(12)
-        elif val == "d":
-            ReturnData.append(13)
-        elif val == "e":
-            ReturnData.append(14)
-        elif val == "f":
-            ReturnData.append(15)
-        else:
-            ReturnData.append(int(val))
+        ReturnData.append(HexIntConvert(val))
     return ReturnData
 
 #Translates RLE to a human-readable string
@@ -140,6 +142,38 @@ def string_to_rle(rle_string):
         HexVal = string_to_data(string[-1])
         ReturnList.append(HexVal[0])
     return ReturnList
+
+#Translates hex to int and vice versa
+def HexIntConvert(val):
+    try:
+        IntValue = int(val)
+        if IntValue == 10:
+            return "a"
+        elif IntValue == 11:
+            return "b"
+        elif IntValue == 12:
+            return "c"
+        elif IntValue == 13:
+            return "d"
+        elif IntValue == 14:
+            return "e"
+        elif IntValue == 15:
+            return "f"
+        else:
+            return IntValue
+    except:
+        if val.lower() == "a":
+            return 10
+        elif val.lower() == "b":
+            return 11
+        elif val.lower() == "c":
+            return 12
+        elif val.lower() == "d":
+            return 13
+        elif val.lower() == "e":
+            return 14
+        elif val.lower() == "f":
+            return 15
 
 #If the file is run directly, run the script
 if __name__ == "__main__":
